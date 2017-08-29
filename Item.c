@@ -23,7 +23,7 @@ ItemCore* makeItemCore(char *name, float value, enum TYPE type) {
         printf("Allocation of Itemcore failed!\n");
         return NULL;
     } else {
-        ic->name = name;
+        strcpy(ic->name, name);
         ic->value = value;
         ic->type = type;
         return ic;
@@ -62,16 +62,20 @@ Book* makeBook(char *name, float value, enum TYPE type, char *content) {
 }
 
 Weapon* makeWeapon(char *name, float value, enum TYPE type, float atk) {
+    printf("Creating w\n");
     Weapon *w = NULL;
     w = (Weapon*) malloc(sizeof(Weapon));
     if (w == NULL) {
         printf("Allocation of Weapon failed\n");
         return NULL;
     } else {
+        printf("Making itemcore\n");
         ItemCore *ic = makeItemCore(NULL, value, type);
+        printf("Copying name\n");
         strcpy(ic->name, name);
         w->itemcore = ic;
         w->atk = atk;
+        printf("Returning w\n");
         return w;
     }
 }
@@ -88,4 +92,9 @@ void deleteWeapon(Weapon *w) {
 }
 
 int main() {
+    char *name = "Excalibur";
+    Weapon *w = makeWeapon(name, 10000, WEAPON, 666);
+    printf("Printing w\n");
+    printf("%s hat %f Angriff\n", w->itemcore->name, w->atk);
+    deleteWeapon(w);
 }
